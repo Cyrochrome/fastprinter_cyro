@@ -1,0 +1,17 @@
+html {
+    height: 100%;
+
+}
+body {
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: linear-gradient(-45deg, #2461db 0%, #6599b3 54%, #ffffff 100%);
+    background: -webkit-linear-gradient(-45deg, #2461db 0%, #6599b3 54%, #ffffff 100%);
+    background: -moz-linear-gradient(-45deg, #2461db 0%, #6599b3 54%, #ffffff 100%);
+    background: -ms-linear-gradient(-45deg, #2461db 0%, #6599b3 54%, #ffffff 100%);
+    background: -o-linear-gradient(-45deg, #2461db 0%, #6599b3 54%, #ffffff 100%);
+}

@@ -7,6 +7,7 @@
     <meta name="description" content="The small framework with powerful features">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="/favicon.ico">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- STYLES -->
 
@@ -369,6 +370,7 @@
     </footer>
 
     <!-- SCRIPTS -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 
     <script {csp-script-nonce}>
         document.getElementById("menuToggle").addEventListener('click', toggleMenu);
