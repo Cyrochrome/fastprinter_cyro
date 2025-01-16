@@ -23,7 +23,147 @@ class Home extends BaseController
 
     public function index(): string
     {
-        return view('home');
+        // Fetch data from the models
+        $products = $this->productModel->findAll();
+        $productCategories = $this->productCategoryModel->findAll();
+        $productStatuses = $this->productStatusModel->findAll();
+
+        // Organize the data into a usable format
+        $organizedList = [];
+        foreach ($products as $product) {
+            // Find the category name based on category_id
+            $category = array_filter($productCategories, function ($category) use ($product) {
+                return $category->category_id === $product->category_id;
+            });
+            $categoryName = reset($category)->category_name ?? 'Unknown Category'; // Default to 'Unknown Category' if not found
+
+            // Find the status name based on status_id
+            $status = array_filter($productStatuses, function ($status) use ($product) {
+                return $status->status_id === $product->status_id;
+            });
+            $statusName = reset($status)->status_name ?? 'Unknown Status'; // Default to 'Unknown Status' if not found
+
+            // Add the organized product information to the list
+            array_push($organizedList, [
+                'productId' => $product->product_id,
+                'productName' => $product->product_name,
+                'productPrice' => $product->product_price,
+                'productCategory' => $categoryName,
+                'productStatus' => $statusName,
+            ]);
+        }
+        $organizedCategories = array_map(function ($category) {
+            return [
+                'categoryId' => $category->category_id,
+                'categoryName' => $category->category_name
+            ];
+        }, $productCategories);
+        $organizedStatuses = array_map(function ($status) {
+            return [
+                'statusId' => $status->status_id,
+                'statusName' => $status->status_name
+            ];
+        }, $productStatuses);
+        // Prepare data for the view
+        $data = [
+            'title' => "Fast Print Tes by Marshalinas Yustiawan",
+            'description' => "Ini adalah program tes yang dibuat menggunkan PHP oleh Marshalinas",
+            'products' => $organizedList,
+            'productCategories' => $organizedCategories,
+            'productStatuses' => $organizedStatuses
+        ];
+        // Load the view with the data
+        return view('home', $data);
+    }
+
+    public function createProduct()
+    {
+        $data = $this->request->getPost();
+
+        if (!$data) {
+            return $this->response->setStatusCode(200)->setJSON(['success' => false]);
+        }
+        // Validation rules
+        $validationRules = [
+            'productName'  => 'required|string|max_length[255]',
+            'productPrice' => 'required|numeric',
+            'productCategory'   => 'required|string|exact_length[40]',
+            'productStatus'     => 'required|string|exact_length[40]',
+        ];
+
+        if (!$this->validate($validationRules)) {
+            // Validation failed, return error
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => false,
+                'errors'  => $this->validator->getErrors(),
+            ]);
+        }
+
+        try {
+            $product = new \App\Entities\Product([
+                'product_name'  => $data['productName'],
+                'product_price' => $data['productPrice'],
+                'category_id'   => $data['productCategory'],
+                'status_id'     => $data['productStatus'],
+            ]);
+
+            $this->productModel->save($product);
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => true,
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(200)->setJSON(['success' => false]);
+        }
+    }
+
+    public function updateProduct($id)
+    {
+        $data = $this->request->getRawInput();
+
+        if (!$data) {
+            return $this->response->setStatusCode(200)->setJSON(['success' => false, 'data' => $data]);
+        }
+
+        // Validation rules
+        $validationRules = [
+            'productName'  => 'required|string|max_length[255]',
+            'productPrice' => 'required|numeric',
+            'productCategory'   => 'required|string|exact_length[40]',
+            'productStatus'     => 'required|string|exact_length[40]',
+        ];
+
+        if (!$this->validate($validationRules)) {
+            // Validation failed, return error
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => false,
+                'errors'  => $this->validator->getErrors(),
+            ]);
+        }
+
+        try {
+            $this->productModel->update($id, [
+                'product_name'  => $data['productName'],
+                'product_price' => $data['productPrice'],
+                'category_id'   => $data['productCategory'],
+                'status_id'     => $data['productStatus'],
+            ]);
+
+            return $this->response->setStatusCode(200)->setJSON(['success' => true]);
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(200)->setJSON(['success' => false]);
+        }
+    }
+
+    public function deleteProduct($id)
+    {
+        try {
+            $this->productModel->delete($id);
+
+            return $this->response->setStatusCode(200)->setJSON(['success' => true]);
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(200)->setJSON(['success' => false]);
+        }
     }
 
     public function fetchRawData()
@@ -79,13 +219,21 @@ class Home extends BaseController
             ];
 
             // Check if the product exists
-            $existingProduct = $this->productModel->where('product_name', $productData['product_name'])->first();
-            if ($existingProduct) {
-                // Update existing product
-                $this->productModel->update($existingProduct->product_id, $productData);
-            } else {
-                // Insert new product
-                $this->productModel->save($productData);
+            $cleanedProductName = trim($productData['product_name']);
+            $existingProduct = $this->productModel
+                ->where('LOWER(TRIM(product_name))', strtolower($cleanedProductName))
+                ->first();
+
+            try {
+                if ($existingProduct) {
+                    // Update the existing product
+                    $this->productModel->update($existingProduct->product_id, $productData);
+                } else {
+                    // Insert a new product
+                    $this->productModel->save($productData);
+                }
+            } catch (\Exception $e) {
+                log_message('error', 'Error processing product: ' . $e->getMessage());
             }
         }
 
