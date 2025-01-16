@@ -86,7 +86,7 @@ class Home extends BaseController
         // Validation rules
         $validationRules = [
             'productName'  => 'required|string|max_length[255]',
-            'productPrice' => 'required|numeric',
+            'productPrice' => 'required|numeric|is_natural',
             'productCategory'   => 'required|string|exact_length[40]',
             'productStatus'     => 'required|string|exact_length[40]',
         ];
@@ -128,7 +128,7 @@ class Home extends BaseController
         // Validation rules
         $validationRules = [
             'productName'  => 'required|string|max_length[255]',
-            'productPrice' => 'required|numeric',
+            'productPrice' => 'required|numeric|is_natural',
             'productCategory'   => 'required|string|exact_length[40]',
             'productStatus'     => 'required|string|exact_length[40]',
         ];
@@ -183,7 +183,7 @@ class Home extends BaseController
 
         // Check response status code
         if ($response->getStatusCode() !== 200) {
-            return redirect()->to('/')->with('error', 'Failed to fetch data from API.');
+            return $this->response->setStatusCode(200)->setJSON(['success' => false]);
         }
 
         // Decode the response body
@@ -191,7 +191,7 @@ class Home extends BaseController
 
         // Validate the response format
         if (!isset($responseData['data']) || !is_array($responseData['data'])) {
-            return redirect()->to('/')->with('error', 'Invalid API response.');
+            return $this->response->setStatusCode(200)->setJSON(['success' => false]);
         }
 
         // Extract the "data" part of the response
@@ -233,10 +233,9 @@ class Home extends BaseController
                     $this->productModel->save($productData);
                 }
             } catch (\Exception $e) {
-                log_message('error', 'Error processing product: ' . $e->getMessage());
+                return $this->response->setStatusCode(200)->setJSON(['success' => false]);
             }
         }
-
-        return redirect()->to('/')->with('success', 'Data successfully processed.');
+        return $this->response->setStatusCode(200)->setJSON(['success' => true]);
     }
 }

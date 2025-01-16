@@ -1,68 +1,210 @@
-# CodeIgniter 4 Application Starter
+# Dokumentasi Proyek
 
-## What is CodeIgniter?
+## 1. Pendahuluan
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Proyek ini adalah hasil dari tes Junior Programmer untuk mengambil data dari API, menyimpannya ke database, dan menampilkannya dalam bentuk aplikasi web dengan fitur CRUD (Create, Read, Update, Delete). Proyek ini dibangun menggunakan framework **CodeIgniter 4** dan menggunakan database **MySQL**.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## 2. Teknologi yang Digunakan
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+- **Framework**: Codeigniter 4
+- **Database**: MySQL
+- **PHP Version**: PHP 8.2.12
+- **Libraries/Tools Tambahan**:
+  - JQuery (Javascript Library, untuk membantu membuat website yang interaktif)
+  - Bootstrap 5 (untuk tampilan)
+  - CI4 CURLRequest
+  - CI4 SQL ORM (untuk berinteraksi dengan database MySQL)
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## 3. Langkah Intsalasi
 
-## Installation & updates
+Panduan untuk menjalankan proyek di mesin lokal.
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+#### Clone Repository
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+```bash
+git clone <URL_REPOSITORY>
+cd <NAMA_FOLDER_PROYEK>
+```
 
-## Setup
+#### Import Database
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+Lakukan import database dengan menggunakan file SQL yang ada di dalam folder root proyek, nama file SQL-nya adalah "fastprint_cyro_dump.sql". Langkah-langkah:
 
-## Important Change with index.php
+1. Buka phpMyAdmin atau tool database pilihan Anda.
+2. Buat database baru, misalnya dengan nama fastprint.
+3. Import file "fastprint_cyro_dump.sql" ke dalam database tersebut.
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+#### Konfigurasi File .env
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+1. Duplikat file env dan beri nama .env.
+2. Sesuaikan konfigurasi database di dalam file .env:
 
-**Please** read the user guide for a better explanation of how CI4 works!
+```env
+database.default.hostname = <YOUR_LOCALHOST>
+database.default.database = <YOUR_DATABASE>
+database.default.username = <YOUR_USERNAME>
+database.default.password = <YOUR_PASSWORD>
+database.default.DBDriver = <YOUR_DBDRIVER>
+```
 
-## Repository Management
+#### Instalasi Dependency
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+Pastikan Anda telah menginstal Composer. Jalankan perintah berikut:
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+```bash
+composer install
+```
 
-## Server Requirements
+#### Menjalankan Proyek
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+Untuk menjalankan server lokal, gunakan perintah berikut:
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+```bash
+php spark serve
+```
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+Akses aplikasi melalui browser di http://localhost:8080.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+## 4. Fitur Aplikasi
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+- **Pengambilan Data API**: Data produk diambil dari API dan disimpan ke database.
+- **Menampilkan Produk**: Menampilkan daftar produk dari database yang memiliki status "Bisa Dijual", "Tidak Bisa Dijual", dan "Semua Status".
+- **CRUD Produk**:
+  - **Create**: Menambahkan produk baru ke database dengan validasi form.
+  - **Update**: Mengedit informasi produk yang sudah ada.
+  - **Delete**: Menghapus produk dengan konfirmasi terlebih dahulu.
+- **Validasi**: Form validasi memastikan input nama tidak kosong dan harga adalah angka.
+
+## 5. Struktur Database
+
+#### Tabel product
+
+# Dokumentasi Proyek
+
+## 1. Pendahuluan
+
+Proyek ini adalah hasil dari tes Junior Programmer untuk mengambil data dari API, menyimpannya ke database, dan menampilkannya dalam bentuk aplikasi web dengan fitur CRUD (Create, Read, Update, Delete). Proyek ini dibangun menggunakan framework **CodeIgniter 4** dan menggunakan database **MySQL**.
+
+## 2. Teknologi yang Digunakan
+
+- **Framework**: Codeigniter 4
+- **Database**: MySQL
+- **PHP Version**: PHP 8.2.12
+- **Libraries/Tools Tambahan**:
+  - JQuery (Javascript Library, untuk membantu membuat website yang interaktif)
+  - Bootstrap 5 (untuk tampilan)
+  - CI4 CURLRequest
+  - CI4 SQL ORM (untuk berinteraksi dengan database MySQL)
+
+## 3. Langkah Intsalasi
+
+Panduan untuk menjalankan proyek di mesin lokal.
+
+#### Clone Repository
+
+```bash
+git clone <URL_REPOSITORY>
+cd <NAMA_FOLDER_PROYEK>
+```
+
+#### Import Database
+
+Lakukan import database dengan menggunakan file SQL yang ada di dalam folder root proyek, nama file SQL-nya adalah "fastprint_cyro_dump.sql". Langkah-langkah:
+
+1. Buka phpMyAdmin atau tool database pilihan Anda.
+2. Buat database baru, misalnya dengan nama fastprint.
+3. Import file "fastprint_cyro_dump.sql" ke dalam database tersebut.
+
+#### Konfigurasi File .env
+
+1. Duplikat file env dan beri nama .env.
+2. Sesuaikan konfigurasi database di dalam file .env:
+
+```env
+database.default.hostname = <YOUR_LOCALHOST>
+database.default.database = <YOUR_DATABASE>
+database.default.username = <YOUR_USERNAME>
+database.default.password = <YOUR_PASSWORD>
+database.default.DBDriver = <YOUR_DBDRIVER>
+```
+
+#### Instalasi Dependency
+
+Pastikan Anda telah menginstal Composer. Jalankan perintah berikut:
+
+```bash
+composer install
+```
+
+#### Menjalankan Proyek
+
+Untuk menjalankan server lokal, gunakan perintah berikut:
+
+```bash
+php spark serve
+```
+
+Akses aplikasi melalui browser di http://localhost:8080.
+
+## 4. Fitur Aplikasi
+
+- **Pengambilan Data API**: Data produk diambil dari API dan disimpan ke database.
+- **Menampilkan Produk**: Menampilkan daftar produk dari database yang memiliki status "Bisa Dijual", "Tidak Bisa Dijual", dan "Semua Status".
+- **CRUD Produk**:
+  - **Create**: Menambahkan produk baru ke database dengan validasi form.
+  - **Update**: Mengedit informasi produk yang sudah ada.
+  - **Delete**: Menghapus produk dengan konfirmasi terlebih dahulu.
+- **Validasi**: Form validasi memastikan input nama tidak kosong dan harga adalah angka.
+
+## 5. Struktur Database
+
+#### Tabel product
+
+| Kolom         | Tipe Data       | Keterangan                    |
+| ------------- | --------------- | ----------------------------- |
+| product_id    | Varchar(40)(PK) | Primary Key                   |
+| product_name  | Varchar(255)    | Nama produk (unique key)      |
+| product_price | Decimal         | Harga produk                  |
+| category_id   | Varchar(40)(FK) | Foreign Key ke tabel Kategori |
+| status_id     | Varchar(40)(FK) | Foreign Key ke tabel Status   |
+
+#### Tabel Kategori
+
+| Kolom         | Tipe Data       | Keterangan    |
+| ------------- | --------------- | ------------- |
+| category_id   | Varchar(40)(PK) | Primary Key   |
+| category_name | Varchar(255)    | Nama kategori |
+
+#### Tabel Status
+
+| Kolom       | Tipe Data       | Keterangan  |
+| ----------- | --------------- | ----------- |
+| status_id   | Varchar(40)(PK) | Primary Key |
+| status_name | Varchar(100)    | Nama status |
+
+## 6. Cara Penggunaan
+
+#### Akses Data Produk
+
+1. Buka aplikasi di browser: `http://127.0.0.1:8000`.
+2. Data produk yang "bisa dijual" bisa dipilih dengan mengaktifkan filter yang tersedia.
+
+#### Tambah Produk
+
+1. Klik tombol **Tambah Produk**, maka akan muncul modal.
+2. Isi form dengan nama produk, harga, kategori, dan status.
+3. Klik **Simpan**.
+
+#### Edit Produk
+
+1. Klik tombol **Edit** di baris produk yang ingin diubah.
+2. Ubah data di form dan klik **Simpan**.
+
+#### Hapus Produk
+
+1. Klik tombol **Hapus**.
+2. Konfirmasi penghapusan di popup yang muncul.
+
+## 7. Video Dokumentasi
+
+Video demonstrasi: [Tautan Video](https://your-link.com)

@@ -90,7 +90,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a href="/fetch" id="confirmFetch" class="btn btn-primary">Yes, Fetch Data</a>
+                <button id="confirmFetch" data-bs-dismiss="modal" class="btn btn-primary">Yes, Fetch Data</a>
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="productPrice" class="form-label">Price</label>
-                        <input type="number" class="form-control" id="productPrice" required>
+                        <input type="number" class="form-control" min="0" id="productPrice" required>
                     </div>
                     <div class="mb-3">
                         <label for="productCategory" class="form-label">Category</label>
@@ -146,7 +146,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="editProductPrice" class="form-label">Price</label>
-                        <input type="number" class="form-control" id="editProductPrice" required>
+                        <input type="number" class="form-control" min="0" id="editProductPrice" required>
                     </div>
                     <div class="mb-3">
                         <label for="editProductCategory" class="form-label">Category</label>
@@ -330,7 +330,6 @@
             url: `/${productToDelete.productId}`, // Change this URL to match your route
             method: 'DELETE',
             success: function(response) {
-                console.log(response);
                 console.log(response.success);
 
                 // Handle success response
@@ -412,7 +411,6 @@
             method: 'POST',
             data: newProduct,
             success: function(response) {
-                console.log(response);
                 console.log(response.data);
 
                 if (response.success) {
@@ -446,7 +444,6 @@
             method: 'PUT',
             data: updatedProduct,
             success: function(response) {
-                console.log(response);
                 if (response.success) {
                     showToast('Product updated successfully!', 'Success', true);
                     location.reload(); // Reload the page to show updated data
@@ -462,6 +459,26 @@
         $('#editProductModal').modal('hide');
     });
 
+    $('#confirmFetch').on('click', function() {
+        console.log('test');
+        $.ajax({
+            url: '/fetch',
+            type: 'POST',
+            success: function(response) {
+                console.log('Data fetched successfully:', response);
+                if (response.success) {
+                    showToast('Data fetched successfully!', 'Success', true);
+                    location.reload(); // Reload the page to show updated data
+                } else {
+                    showToast('Failed to fetch data.', 'Error', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                showToast('An error occurred while fetching data.', 'Error', false);
+
+            }
+        });
+    });
 
     // Initial render
     renderTable(currentPage);
