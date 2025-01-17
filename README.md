@@ -205,6 +205,3 @@ Akses aplikasi melalui browser di http://localhost:8080.
 1. Klik tombol **Hapus**.
 2. Konfirmasi penghapusan di popup yang muncul.
 
-## 7. Video Dokumentasi
-
-Video demonstrasi: [Tautan Video](https://your-link.com)
